@@ -1,33 +1,32 @@
+// link do repozytorium:
+// https://github.com/pwolan/ProgramowanieObiektowe
+
 package agh.ics.oop;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 public class World {
     public static void main(String[] args) {
-        System.out.println("Start");
-        run(convert(args));
-        System.out.println("Stop");
+        Vector2d position1 = new Vector2d(1,2);
+        System.out.println(position1);
+        Vector2d position2 = new Vector2d(-2,1);
+        System.out.println(position2);
+        System.out.println(position1.add(position2));
     }
 
-    public static Direction[] convert(String[] tab) {
-        Direction[] out = Arrays.stream(tab).map(el -> switch (el) {
-            case "f" -> Direction.FORWARD;
-            case "b" -> Direction.BACKWARD;
-            case "r" -> Direction.RIGHT;
-            case "l" -> Direction.LEFT;
+    public static MoveDirection[] convert(String[] tab) {
+        MoveDirection[] out = Arrays.stream(tab).map(el -> switch (el) {
+            case "f" -> MoveDirection.FORWARD;
+            case "b" -> MoveDirection.BACKWARD;
+            case "r" -> MoveDirection.RIGHT;
+            case "l" -> MoveDirection.LEFT;
             default -> null;
-        }).filter(el -> el != null).toArray(size -> new Direction[size]);
+        }).filter(el -> el != null).toArray(size -> new MoveDirection[size]);
         return out;
     }
 
-    public static void run(Direction[] tab) {
-//        for(int i=0; i<tab.length; i++){
-//            System.out.print(tab[i]);
-//            if(i != tab.length -1){
-//                System.out.print(", ");
-//            }
-//        }
+    public static void run(MoveDirection[] tab) {
+
        Arrays.stream(tab).map(el -> switch (el) {
             case FORWARD -> "Zwierzak idzie do przodu";
             case BACKWARD -> "Zwierzak idzie do tyłu";
