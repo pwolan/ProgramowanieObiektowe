@@ -3,35 +3,21 @@
 
 package agh.ics.oop;
 
-import java.util.Arrays;
-
+/*
+* Zadanie 10
+* a) trzymanie reprezentacji mapy w jakiejś strukturze danych. Metoda Animal.move sprawdza czy można wykonać ruch, następnie zmienia informacjie o danym obiekcie w reprezentacji mapy
+* b) metoda Animal.move sprawdza rozmieszczenie wszystkich innych zwierząt przed decyzją czy może wykonać dany ruch. Wtedy wszystkie zwierzęta muszą być trzymane w jednej tablicy.
+* */
 public class World {
     public static void main(String[] args) {
-        Vector2d position1 = new Vector2d(1,2);
-        System.out.println(position1);
-        Vector2d position2 = new Vector2d(-2,1);
-        System.out.println(position2);
-        System.out.println(position1.add(position2));
+        Animal animal = new Animal();
+        String[] input = new String[]{"r", "f", "f", "f"};
+        var parser = new OptionsParser();
+        var parsedInput = parser.parse(input);
+        for(MoveDirection dir : parsedInput){
+            animal.move(dir);
+        }
+        System.out.println(animal);
     }
 
-    public static MoveDirection[] convert(String[] tab) {
-        MoveDirection[] out = Arrays.stream(tab).map(el -> switch (el) {
-            case "f" -> MoveDirection.FORWARD;
-            case "b" -> MoveDirection.BACKWARD;
-            case "r" -> MoveDirection.RIGHT;
-            case "l" -> MoveDirection.LEFT;
-            default -> null;
-        }).filter(el -> el != null).toArray(size -> new MoveDirection[size]);
-        return out;
-    }
-
-    public static void run(MoveDirection[] tab) {
-
-       Arrays.stream(tab).map(el -> switch (el) {
-            case FORWARD -> "Zwierzak idzie do przodu";
-            case BACKWARD -> "Zwierzak idzie do tyłu";
-            case RIGHT -> "Zwierzak skręca w prawo";
-            case LEFT -> "Zwierzak skręca w lewo";
-        }).forEach(System.out::println);
-    }
 }
