@@ -3,7 +3,14 @@ package agh.ics.oop;
 public class Animal {
     private Vector2d position = new Vector2d(2,2);
     private MapDirection orientation = MapDirection.NORTH;
-
+    private IWorldMap map;
+    public Animal(IWorldMap map) {
+        this.map = map;
+    }
+    public Animal(IWorldMap map, Vector2d initialPosition) {
+        this.map = map;
+        this.position = initialPosition;
+    }
     public void move(MoveDirection direction){
         switch (direction){
             case LEFT -> orientation = orientation.previous();
@@ -11,14 +18,14 @@ public class Animal {
             case FORWARD -> {
                 Vector2d vec = orientation.toUnitVector();
                 Vector2d newPosition = position.add(vec);
-                if(newPosition.x <= 4 && newPosition.y <=4 && newPosition.x >= 0 && newPosition.y >= 0){
+                if(map.canMoveTo(newPosition)){
                     position = newPosition;
                 }
             }
             case BACKWARD -> {
                 Vector2d vec = orientation.toUnitVector();
                 Vector2d newPosition = position.subtract(vec);
-                if(newPosition.x <= 4 && newPosition.y <=4 && newPosition.x >= 0 && newPosition.y >= 0){
+                if(map.canMoveTo(newPosition)){
                     position = newPosition;
                 }
             }
@@ -31,13 +38,19 @@ public class Animal {
 
     @Override
     public String toString() {
-        return "Animal{" +
-                "position=" + position +
-                ", orientation=" + orientation +
-                '}';
+        return switch (orientation){
+            case NORTH -> "N";
+            case EAST -> "E";
+            case WEST -> "W";
+            case SOUTH -> "S";
+        };
     }
 
     public MapDirection getOrientation() {
         return orientation;
+    }
+
+    public Vector2d getPosition() {
+        return position;
     }
 }
