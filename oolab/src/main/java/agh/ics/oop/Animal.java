@@ -3,7 +3,7 @@ package agh.ics.oop;
 public class Animal {
     private Vector2d position = new Vector2d(2,2);
     private MapDirection orientation = MapDirection.NORTH;
-    private IWorldMap map;
+    private final IWorldMap map;
     public Animal(IWorldMap map) {
         this.map = map;
     }
@@ -26,10 +26,14 @@ public class Animal {
                 Vector2d vec = orientation.toUnitVector();
                 Vector2d newPosition = position.subtract(vec);
                 if(map.canMoveTo(newPosition)){
+                    if(map instanceof GrassField grassMap){
+                        grassMap.removeGrass(newPosition);
+                    }
                     position = newPosition;
                 }
             }
         }
+
     }
 
     public boolean isAt(Vector2d position){
@@ -49,7 +53,6 @@ public class Animal {
     public MapDirection getOrientation() {
         return orientation;
     }
-
     public Vector2d getPosition() {
         return position;
     }

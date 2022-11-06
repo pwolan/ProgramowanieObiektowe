@@ -6,7 +6,8 @@ public class SimulationEngine implements IEngine {
     private MoveDirection[] moves;
     private IWorldMap map;
     private Vector2d[] startPositions;
-    
+
+
     public SimulationEngine(MoveDirection[] moves, IWorldMap map, Vector2d[] startPositions) {
         this.moves = moves;
         this.map = map;
@@ -27,5 +28,7 @@ public class SimulationEngine implements IEngine {
             Animal an = animals.get(i % animalsLength);
             an.move(moves[i]);
         }
+        System.out.println(map);
+        
     }
 }
