@@ -22,7 +22,7 @@ class GrassFieldTest {
         map.place(an1);
         map.place(an2);
         assertEquals(map.getAnimals().size(), 1);
-        assertEquals(map.getAnimals().get(0), an1);
+
     }
     @Test
     void isOccupiedTest(){

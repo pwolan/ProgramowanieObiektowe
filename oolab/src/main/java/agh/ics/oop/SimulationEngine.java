@@ -1,6 +1,6 @@
 package agh.ics.oop;
 
-import java.util.List;
+import java.util.Map;
 
 public class SimulationEngine implements IEngine {
     private MoveDirection[] moves;
@@ -12,20 +12,25 @@ public class SimulationEngine implements IEngine {
         this.moves = moves;
         this.map = map;
         this.startPositions = startPositions;
-        
+
+
+
         for(Vector2d pos : startPositions){
             Animal animal = new Animal(map, pos);
             map.place(animal);
+            animal.addObserver((IPositionChangeObserver) map);
         }
 
     }
 
     @Override
     public void run() {
-        List<Animal> animals = map.getAnimals();
+        Map<Vector2d,Animal> animals = map.getAnimals();
+        Animal[] animalsArray = animals.values().toArray(new Animal[0]);
         int animalsLength = animals.size();
+
         for(int i=0; i< moves.length; i++){
-            Animal an = animals.get(i % animalsLength);
+            Animal an =  animalsArray[(i % animalsLength)];
             an.move(moves[i]);
         }
         System.out.println(map);

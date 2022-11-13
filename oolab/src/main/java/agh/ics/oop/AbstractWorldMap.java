@@ -1,16 +1,23 @@
 package agh.ics.oop;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
-public abstract class AbstractWorldMap implements IWorldMap {
-    protected List<Animal> animals = new ArrayList<>();
+public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
+    //    protected List<Animal> animals = new ArrayList<>();
+    protected Map<Vector2d, Animal> animals = new HashMap<>();
     protected final int width;
     protected final int height;
 
     public AbstractWorldMap(int width, int height) {
         this.width = width;
         this.height = height;
+    }
+
+    @Override
+    public void positionChanged(Vector2d oldPosition, Vector2d newPosition) {
+        Animal an = animals.remove(oldPosition);
+        animals.put(newPosition, an);
     }
 
     @Override
@@ -25,7 +32,7 @@ public abstract class AbstractWorldMap implements IWorldMap {
     @Override
     public boolean place(Animal animal) {
         if(!isOccupied(animal.getPosition())){
-            animals.add(animal);
+            animals.put(animal.getPosition(), animal);
             return true;
         }
         return false;
@@ -33,18 +40,16 @@ public abstract class AbstractWorldMap implements IWorldMap {
 
     @Override
     public boolean isOccupied(Vector2d position) {
-        return animals.stream().anyMatch(a -> a.isAt(position));
+        return animals.containsKey(position);
     }
 
     @Override
     public Object objectAt(Vector2d position) {
-        return animals.stream()
-                .filter(a->a.isAt(position))
-                .findFirst()
-                .orElse(null);
+        return animals.get(position);
     }
 
     abstract Vector2d calculateMapBounds();
+
 
     @Override
     public String toString() {
@@ -53,7 +58,7 @@ public abstract class AbstractWorldMap implements IWorldMap {
     }
 
     @Override
-    public List<Animal> getAnimals() {
+    public Map<Vector2d,Animal> getAnimals() {
         return animals;
     }
 }

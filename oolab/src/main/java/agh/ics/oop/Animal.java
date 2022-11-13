@@ -1,9 +1,13 @@
 package agh.ics.oop;
 
-public class Animal {
+import java.util.ArrayList;
+import java.util.List;
+
+public class Animal implements IMapElement{
     private Vector2d position = new Vector2d(2,2);
     private MapDirection orientation = MapDirection.NORTH;
     private final IWorldMap map;
+    List<IPositionChangeObserver> observersList = new ArrayList<>();
     public Animal(IWorldMap map) {
         this.map = map;
     }
@@ -19,6 +23,7 @@ public class Animal {
                 Vector2d vec = orientation.toUnitVector();
                 Vector2d newPosition = position.add(vec);
                 if(map.canMoveTo(newPosition)){
+                    positionChanged(position, newPosition);
                     position = newPosition;
                 }
             }
@@ -26,9 +31,8 @@ public class Animal {
                 Vector2d vec = orientation.toUnitVector();
                 Vector2d newPosition = position.subtract(vec);
                 if(map.canMoveTo(newPosition)){
-                    if(map instanceof GrassField grassMap){
-                        grassMap.removeGrass(newPosition);
-                    }
+
+                    positionChanged(position,newPosition);
                     position = newPosition;
                 }
             }
@@ -38,6 +42,17 @@ public class Animal {
 
     public boolean isAt(Vector2d position){
         return position.equals(this.position);
+    }
+    public void addObserver(IPositionChangeObserver observer){
+        observersList.add(observer);
+    }
+    public void removeObserver(IPositionChangeObserver observer){
+        observersList.remove(observer);
+    }
+    void positionChanged(Vector2d oldPosition, Vector2d newPosition){
+        for(IPositionChangeObserver observer : observersList){
+            observer.positionChanged(oldPosition, newPosition);
+        }
     }
 
     @Override
