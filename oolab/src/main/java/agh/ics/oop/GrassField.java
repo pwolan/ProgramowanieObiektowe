@@ -1,23 +1,35 @@
 package agh.ics.oop;
 
+import javafx.geometry.HPos;
+import javafx.geometry.VPos;
+import javafx.scene.control.Label;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.RowConstraints;
+import javafx.scene.text.TextAlignment;
+
 import java.util.*;
 
 public class GrassField  extends AbstractWorldMap{
     private final int grassRange;
     private final Map<Vector2d, Grass> grassTufts = new HashMap<>();
-    public GrassField(int n) {
+//    private final int FIELD_GROW = 20;
+    private MapBoundary mapBoundary;
+    public GrassField(int n, MapBoundary mapBoundary) {
         super(Integer.MAX_VALUE, Integer.MAX_VALUE);
 
+        this.mapBoundary = mapBoundary;
         grassRange = (int) Math.sqrt(n * 10) + 1;
         Set<Vector2d> positions = new HashSet<>();
-        while(positions.size() < n){
+        while (positions.size() < n) {
             int x = (int) (Math.random() * (grassRange));
             int y = (int) (Math.random() * (grassRange));
             positions.add(new Vector2d(x, y));
         }
-        for(Vector2d vec : positions){
+        for (Vector2d vec : positions) {
             Grass g = new Grass(vec);
             grassTufts.put(g.getPosition(), g);
+            mapBoundary.addElement(g);
         }
 
 
@@ -56,12 +68,8 @@ public class GrassField  extends AbstractWorldMap{
 
     @Override
     Vector2d calculateMapBounds() {
-        Vector2d[] animalsVectorsList = animals.keySet().toArray(new Vector2d[0]);
-        int maxW = Arrays.stream(animalsVectorsList).mapToInt(a->a.x).max().orElse(0);
-        maxW = Math.max(maxW, grassRange);
-        int maxH  = Arrays.stream(animalsVectorsList).mapToInt(a->a.y).max().orElse(0);
-        maxH = Math.max(maxH, grassRange);
-        return new Vector2d(maxW, maxH);
+        return mapBoundary.getBoundaryVector();
     }
+
 
 }

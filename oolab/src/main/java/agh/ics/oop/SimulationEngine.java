@@ -8,7 +8,7 @@ public class SimulationEngine implements IEngine {
     private Vector2d[] startPositions;
 
 
-    public SimulationEngine(MoveDirection[] moves, IWorldMap map, Vector2d[] startPositions) {
+    public SimulationEngine(MoveDirection[] moves, IWorldMap map, Vector2d[] startPositions, MapBoundary mapBoundary) {
         this.moves = moves;
         this.map = map;
         this.startPositions = startPositions;
@@ -19,6 +19,9 @@ public class SimulationEngine implements IEngine {
             Animal animal = new Animal(map, pos);
             map.place(animal);
             animal.addObserver((IPositionChangeObserver) map);
+            animal.addObserver(mapBoundary);
+            mapBoundary.addElement(animal);
+
         }
 
     }
