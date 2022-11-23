@@ -16,9 +16,17 @@ public class Animal implements IMapElement{
         this.position = initialPosition;
     }
     public void move(MoveDirection direction){
+        System.out.println(direction);
         switch (direction){
-            case LEFT -> orientation = orientation.previous();
-            case RIGHT -> orientation = orientation.next();
+            case LEFT -> {
+                orientation = orientation.previous();
+                positionChanged(position,position);
+            }
+            case RIGHT -> {
+
+                orientation = orientation.next();
+                positionChanged(position, position);
+            }
             case FORWARD -> {
                 Vector2d vec = orientation.toUnitVector();
                 Vector2d newPosition = position.add(vec);
@@ -70,5 +78,20 @@ public class Animal implements IMapElement{
     }
     public Vector2d getPosition() {
         return position;
+    }
+
+    @Override
+    public String getFileName() {
+         return switch (orientation){
+            case NORTH -> "down";
+            case EAST -> "right";
+            case WEST -> "left";
+            case SOUTH -> "up";
+        };
+    }
+
+    @Override
+    public String getLabelText() {
+        return toString() + " " + getPosition().toString();
     }
 }

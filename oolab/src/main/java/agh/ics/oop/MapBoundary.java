@@ -20,6 +20,7 @@ public class MapBoundary implements IPositionChangeObserver {
             return Integer.compare(o1.y, o2.y);
         }
     };
+
   private TreeMap<Vector2d, IMapElement> elementsX = new TreeMap<>(xComparator);
     private TreeMap<Vector2d, IMapElement> elementsY = new TreeMap<>(yComparator);
     @Override

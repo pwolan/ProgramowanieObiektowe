@@ -30,7 +30,7 @@
 //    }
 //    @Test
 //    void placeTest2(){
-//        IWorldMap map = new GrassField(10);
+//        IWorldMap map = new GrassField(10,);
 //        Animal an1 = new Animal(map, new Vector2d(2,2));
 //        Animal an2 = new Animal(map, new Vector2d(2,3));
 //        map.place(an1);

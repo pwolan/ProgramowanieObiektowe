@@ -12,8 +12,17 @@ public class Grass implements IMapElement{
     }
 
     @Override
+    public String getFileName() {
+        return "grass";
+    }
+
+    @Override
     public String toString() {
         return "*";
     }
 
+    @Override
+    public String getLabelText() {
+        return "Trawa";
+    }
 }
