@@ -83,10 +83,10 @@ public class Animal implements IMapElement{
     @Override
     public String getFileName() {
          return switch (orientation){
-            case NORTH -> "down";
+            case NORTH -> "up";
             case EAST -> "right";
             case WEST -> "left";
-            case SOUTH -> "up";
+            case SOUTH -> "down";
         };
     }
 

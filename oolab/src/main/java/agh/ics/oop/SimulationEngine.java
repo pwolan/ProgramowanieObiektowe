@@ -5,15 +5,31 @@ import agh.ics.oop.gui.MapRenderer;
 import java.util.Map;
 
 public class SimulationEngine implements IEngine, Runnable {
-    private MoveDirection[] moves;
+    private MoveDirection[] moves = new MoveDirection[]{};
     private IWorldMap map;
     private Vector2d[] startPositions;
     private MapRenderer renderer;
     private int moveDelay = 1000;
 
-    public SimulationEngine(MoveDirection[] moves, IWorldMap map, Vector2d[] startPositions, MapBoundary mapBoundary, MapRenderer mapRenderer) {
+    public SimulationEngine(IWorldMap map, Vector2d[] startPositions,MapBoundary mapBoundary, MapRenderer mapRenderer) {
+        this.map = map;
+        this.startPositions = startPositions;
         this.renderer = mapRenderer;
+
+        for (Vector2d pos : startPositions) {
+            Animal animal = new Animal(map, pos);
+            map.place(animal);
+            animal.addObserver((IPositionChangeObserver) map);
+            animal.addObserver(mapBoundary);
+            animal.addObserver(mapRenderer);
+            mapBoundary.addElement(animal);
+
+        }
+    }
+
+    public SimulationEngine(MoveDirection[] moves, IWorldMap map, Vector2d[] startPositions, MapBoundary mapBoundary, MapRenderer mapRenderer) {
         this.moves = moves;
+        this.renderer = mapRenderer;
         this.map = map;
         this.startPositions = startPositions;
 
@@ -55,5 +71,10 @@ public class SimulationEngine implements IEngine, Runnable {
 
     public void setMoveDelay(int moveDelay) {
         this.moveDelay = moveDelay;
+    }
+
+    //setter dla pola moves (czyli directions)
+    public void setMoves(MoveDirection[] moves) {
+        this.moves = moves;
     }
 }

@@ -28,7 +28,8 @@ public class MapRenderer implements IPositionChangeObserver {
 
     public void render(){
         Platform.runLater(() -> {
-
+            rootPane.getColumnConstraints().clear();
+            rootPane.getRowConstraints().clear();
             Node gr = rootPane.getChildren().get(0);
 
             rootPane.getChildren().clear();
